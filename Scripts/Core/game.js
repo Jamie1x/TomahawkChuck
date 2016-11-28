@@ -9,9 +9,10 @@ var currentScene;
 var scene;
 // Preload Assets required
 var assetData = [
-    { id: "bg", src: "../../Assets/images/allScene.png" },
-    { id: "floor", src: "../../Assets/images/floor.png" },
-    { id: "atlas", src: "../../Assets/images/Test.png" },
+    { id: "BG", src: "../../Assets/images/bg.png" },
+    { id: "Title", src: "../../Assets/images/title.png" },
+    { id: "PlayBtn", src: "../../Assets/images/playBtn.png" },
+    { id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png" },
     { id: "theme", src: "../../Assets/audio/main_theme.mp3" }
 ];
 function preload() {
@@ -29,41 +30,7 @@ function init() {
     stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
-    var atlasData = {
-        "images": [
-            /*
-            assets.getResult("player"),
-            assets.getResult("block"),
-            assets.getResult("pipe1.png"),
-            assets.getResult("pipe2.png"),
-            assets.getResult("pipe3.png"),
-            assets.getResult("qBlock")
-            */
-            assets.getResult("atlas")
-        ],
-        "frames": [
-            [40, 0, 45, 45, 0, 0, 0],
-            [43, 45, 46, 86, 0, 0, 0],
-            [43.131, 39, 86, 0, 0, 0],
-            [0, 131, 43, 86, 0, 0, 0],
-            [0, 217, 87, 87, 0, 0, 0],
-            [0, 304, 87, 130, 0, 0, 0],
-            [0, 434, 93, 175, 0, 0, 0],
-            [0, 45, 43, 86, 0, 0, 0],
-            [0, 0, 40, 45, 0, 0, 0]
-        ],
-        "animations": {
-            "run": { "frames": [1, 3], speed: 0.5 },
-            "player": { "frames": [7] },
-            "block": { "frames": [0] },
-            "qBlock": { "frames": [8] },
-            "pipe1": { "frames": [4] },
-            "pipe2": { "frames": [5] },
-            "pipe3": { "frames": [6] }
-        },
-    };
-    atlas = new createjs.SpriteSheet(atlasData);
-    scene = config.Scene.GAME;
+    scene = config.Scene.MENU;
     changeScene();
 }
 function gameLoop(event) {

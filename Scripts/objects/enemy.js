@@ -8,7 +8,7 @@ var objects;
     var Enemy = (function (_super) {
         __extends(Enemy, _super);
         function Enemy(imageString, life) {
-            _super.call(this, enemyAtlas, imageString, "");
+            _super.call(this, imageString);
             this._life = life;
         }
         Object.defineProperty(Enemy.prototype, "life", {
@@ -34,7 +34,7 @@ var objects;
             currentScene.removeChild(this);
         };
         return Enemy;
-    }(objects.GameObject));
+    })(objects.GameObject);
     objects.Enemy = Enemy;
 })(objects || (objects = {}));
 //# sourceMappingURL=enemy.js.map

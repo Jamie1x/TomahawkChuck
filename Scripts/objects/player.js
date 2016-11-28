@@ -13,7 +13,6 @@ var objects;
             this._maxSpeedX = 10;
             this._jumpSpeed = 10;
             this._friction = -1;
-            this._marioState = config.MarioState.SMALL;
             this._isStar = false;
             this._isDead = false;
             this._isGrounded = false;
@@ -110,7 +109,7 @@ var objects;
             this._isJumping = true;
         };
         return Player;
-    }(objects.GameObject));
+    })(objects.GameObject);
     objects.Player = Player;
 })(objects || (objects = {}));
 //# sourceMappingURL=player.js.map

@@ -5,14 +5,12 @@
 /// <reference path="../config/controls.ts" />
 
 /// <reference path="../objects/asset.ts" />
-/// <reference path="../objects/label.ts" />
 /// <reference path="../objects/button.ts" />
 /// <reference path="../objects/scene.ts" />
 /// <reference path="../objects/player.ts" />
 /// <reference path="../objects/enemy.ts" />
 /// <reference path="../objects/gameobject.ts" />
 /// <reference path="../objects/vector2.ts" />
-/// <reference path="../objects/pipe.ts" />
 
 /// <reference path="../util/physicsManager.ts" />
 

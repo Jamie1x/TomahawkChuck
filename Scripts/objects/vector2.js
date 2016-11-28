@@ -26,7 +26,7 @@ var objects;
             return new objects.Vector2(this.x / mag, this.y / mag);
         };
         return Vector2;
-    }(createjs.Point));
+    })(createjs.Point);
     objects.Vector2 = Vector2;
 })(objects || (objects = {}));
 //# sourceMappingURL=vector2.js.map

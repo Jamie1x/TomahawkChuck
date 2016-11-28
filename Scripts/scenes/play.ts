@@ -6,9 +6,6 @@ module scenes {
         private _ground : createjs.Bitmap;
         private _player : objects.Player;
 
-        private _pipes : objects.Pipe[];
-        private _blocks : objects.Block[];
-        private _qBlocks : objects.qBlock[];
         private _scrollableObjContainer : createjs.Container;
 
         private _scrollTrigger : number = 350;
@@ -23,38 +20,6 @@ module scenes {
             this._ground = new createjs.Bitmap(assets.getResult("floor"));
             this._scrollableObjContainer = new createjs.Container();
             this._player = new objects.Player("player");
-
-            this._pipes = [];
-            this._pipes.push(new objects.Pipe(config.PipeSize.SMALL, new objects.Vector2(1208, 450)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.MEDIUM, new objects.Vector2(1640, 408)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.LARGE, new objects.Vector2(1984,363)));
-            this._pipes.push(new objects.Pipe(config.PipeSize.LARGE, new objects.Vector2(2460, 363)));
-
-            this._blocks = [];
-            this._blocks.push(new objects.Block(new objects.Vector2(861,364)));
-            this._blocks.push(new objects.Block(new objects.Vector2(946,364)));
-            this._blocks.push(new objects.Block(new objects.Vector2(1031,364)));
-
-            this._qBlocks = [];
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(688, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(906, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(993, 364)));
-            this._qBlocks.push(new objects.qBlock(new objects.Vector2(948, 191)));
-
-            this._scrollableObjContainer.addChild(this._bg);
-            this._scrollableObjContainer.addChild(this._player);
-            this._scrollableObjContainer.addChild(this._ground);
-            for(let pipe of this._pipes) {
-                this._scrollableObjContainer.addChild(pipe);
-            }
-
-            for(let block of this._blocks) {
-                this._scrollableObjContainer.addChild(block);
-            }
-
-            for(let qBlock of this._qBlocks) {
-                this._scrollableObjContainer.addChild(qBlock);
-            }
 
             this._ground.y = 535;
 
@@ -87,21 +52,6 @@ module scenes {
 
             if(!this._player.getIsGrounded())
                 this._checkPlayerWithFloor();
-
-            for(let p of this._pipes ) {
-                if(this.checkCollision(this._player, p)) {
-                    this._player.position.x = p.x - this._player.getBounds().width - 0.01;
-                    this._player.setVelocity(new objects.Vector2(0,0));
-                    this._player.resetAcceleration();
-
-                    this._player.isColliding = true;
-                    
-                    console.log(p.name);
-                }
-                else {
-                    this._player.isColliding = false;
-                }
-            }
 
             this._player.update();
 

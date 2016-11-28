@@ -19,7 +19,7 @@ var Util;
             }
         };
         return PhysicsManager;
-    }());
+    })();
     Util.PhysicsManager = PhysicsManager;
 })(Util || (Util = {}));
 //# sourceMappingURL=physicsManager.js.map

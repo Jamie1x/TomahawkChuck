@@ -67,7 +67,7 @@ var objects;
             this.y = this.position.y;
         };
         return GameObject;
-    }(createjs.Sprite));
+    })(createjs.Sprite);
     objects.GameObject = GameObject;
 })(objects || (objects = {}));
 //# sourceMappingURL=gameobject.js.map

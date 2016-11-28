@@ -13,7 +13,7 @@ var objects;
             this.position = this.defaultPosition;
         }
         return Ground;
-    }(objects.GameObject));
+    })(objects.GameObject);
     objects.Ground = Ground;
 })(objects || (objects = {}));
 //# sourceMappingURL=ground.js.map

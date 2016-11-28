@@ -8,7 +8,6 @@ module objects {
         private _jumpSpeed : number = 10;
         private _friction : number = -1;
 
-        private _marioState : number = config.MarioState.SMALL;
         private _isStar : boolean = false;
         private _isDead : boolean = false;
         private _isGrounded : boolean = false;

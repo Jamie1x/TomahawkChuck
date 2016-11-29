@@ -1,5 +1,9 @@
 /// <reference path = "_reference.ts" />
 
+//COMP397 Final Assignment Pt1
+//Jamie Kennedy - 300753196
+//November 29, 2016
+
 // Global Variables
 var assets: createjs.LoadQueue;
 var canvas: HTMLElement;

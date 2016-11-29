@@ -3,6 +3,10 @@
     Menu scene that contains all assets and functionality associated with the menu itself
 */
 
+//COMP397 Final Assignment Pt1
+//Jamie Kennedy - 300753196
+//November 28, 2016
+
 module scenes {
     export class Menu extends objects.Scene {
 

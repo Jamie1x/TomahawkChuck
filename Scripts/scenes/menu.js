@@ -7,6 +7,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+//COMP397 Final Assignment Pt1
+//Jamie Kennedy - 300753196
+//November 28, 2016
 var scenes;
 (function (scenes) {
     var Menu = (function (_super) {

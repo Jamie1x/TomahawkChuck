@@ -1,0 +1,120 @@
+{"frames": [
+
+{
+	"filename": "Tomahawk1.png",
+	"frame": {"x":841,"y":682,"w":387,"h":418},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":387,"h":418},
+	"sourceSize": {"w":387,"h":418},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk2.png",
+	"frame": {"x":1,"y":330,"w":473,"h":347},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":473,"h":347},
+	"sourceSize": {"w":473,"h":347},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk3.png",
+	"frame": {"x":1,"y":1,"w":436,"h":327},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":436,"h":327},
+	"sourceSize": {"w":436,"h":327},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk4.png",
+	"frame": {"x":421,"y":679,"w":418,"h":387},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":418,"h":387},
+	"sourceSize": {"w":418,"h":387},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk5.png",
+	"frame": {"x":1426,"y":333,"w":347,"h":473},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":347,"h":473},
+	"sourceSize": {"w":347,"h":473},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk6.png",
+	"frame": {"x":877,"y":1,"w":327,"h":436},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":327,"h":436},
+	"sourceSize": {"w":327,"h":436},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk7.png",
+	"frame": {"x":1261,"y":682,"w":387,"h":418},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":387,"h":418},
+	"sourceSize": {"w":387,"h":418},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk8.png",
+	"frame": {"x":476,"y":330,"w":473,"h":347},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":473,"h":347},
+	"sourceSize": {"w":473,"h":347},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk9.png",
+	"frame": {"x":439,"y":1,"w":436,"h":327},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":436,"h":327},
+	"sourceSize": {"w":436,"h":327},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk10.png",
+	"frame": {"x":1,"y":679,"w":418,"h":387},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":418,"h":387},
+	"sourceSize": {"w":418,"h":387},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk11.png",
+	"frame": {"x":951,"y":333,"w":347,"h":473},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":347,"h":473},
+	"sourceSize": {"w":347,"h":473},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Tomahawk12.png",
+	"frame": {"x":1315,"y":1,"w":330,"h":438},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":330,"h":438},
+	"sourceSize": {"w":330,"h":438},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Tomahawk.png",
+	"format": "RGBA8888",
+	"size": {"w":1900,"h":1070},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:26099113e05b4024773e9026a3e855dc:65f13deee02d895bc556faed34062f94:6c150743d76d172273699bdd2857ef4b$"
+}
+}

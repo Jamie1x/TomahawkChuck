@@ -1,3 +1,6 @@
+//COMP397 Final Assignment Pt2
+//Jamie Kennedy - 300753196
+//December 3, 2016
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -13,35 +16,34 @@ var scenes;
             this.start();
         }
         Play.prototype.start = function () {
-            this._bg = new createjs.Bitmap(assets.getResult("bg"));
-            this._ground = new createjs.Bitmap(assets.getResult("floor"));
             this._scrollableObjContainer = new createjs.Container();
-            this._player = new objects.Player("player");
+            this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
+            this._ground = new createjs.Bitmap(assets.getResult("Floor"));
+            this._tomahawk = new objects.Tomahawk("Tomahawk");
+            this._tomahawk.position.y = config.Screen.HEIGHT - 30;
+            this._tomahawk.position.x = 50;
+            this._scrollableObjContainer.addChild(this._bg);
+            this._scrollableObjContainer.addChild(this._ground);
+            this._scrollableObjContainer.addChild(this._tomahawk);
             this._ground.y = 535;
             this.addChild(this._scrollableObjContainer);
             window.onkeydown = this._onKeyDown;
             window.onkeyup = this._onKeyUp;
-            createjs.Sound.play("theme");
+            //createjs.Sound.play("theme");
             stage.addChild(this);
         };
         Play.prototype.update = function () {
-            if (controls.LEFT) {
-                this._player.moveLeft();
-            }
-            if (controls.RIGHT) {
-                this._player.moveRight();
-            }
+            /*if(!this._tomahawk.getIsGrounded())
+                this._checkTomahawkWithFloor();
+            this._tomahawk.update();*/
             if (controls.JUMP) {
-                this._player.jump();
+                if (!this._tomahawk.getIsThrown()) {
+                    this._tomahawk.throw();
+                }
             }
-            if (!controls.RIGHT && !controls.LEFT) {
-                this._player.resetAcceleration();
-            }
-            if (!this._player.getIsGrounded())
-                this._checkPlayerWithFloor();
-            this._player.update();
+            this._tomahawk.update();
             if (this.checkScroll()) {
-                this._scrollBGForward(this._player.position.x);
+                this._scrollBGForward(this._tomahawk.position.x);
             }
         };
         Play.prototype._onKeyDown = function (event) {
@@ -90,15 +92,15 @@ var scenes;
             if (this._scrollableObjContainer.regX < 3071 - 815)
                 this._scrollableObjContainer.regX = speed - 300;
         };
-        Play.prototype._checkPlayerWithFloor = function () {
-            if (this._player.y + this._player.getBounds().height > this._ground.y) {
+        Play.prototype._checkTomahawkWithFloor = function () {
+            if (this._tomahawk.y + this._tomahawk.getBounds().height > this._ground.y) {
                 console.log("HIT GROUND");
-                this._player.position.y = this._ground.y - this._player.getBounds().height;
-                this._player.setIsGrounded(true);
+                this._tomahawk.position.y = this._ground.y - this._tomahawk.getBounds().height;
+                this._tomahawk.setIsGrounded(true);
             }
         };
         Play.prototype.checkScroll = function () {
-            if (this._player.x >= this._scrollTrigger) {
+            if (this._tomahawk.x >= this._scrollTrigger) {
                 return true;
             }
             else {

@@ -1,25 +1,36 @@
+//COMP397 Final Assignment Pt2
+//Jamie Kennedy - 300753196
+//December 3, 2016
+
 module scenes {
     export class Play extends objects.Scene {
 
-        private _bg : createjs.Bitmap;
+        private _bg: createjs.Bitmap;
 
-        private _ground : createjs.Bitmap;
-        private _player : objects.Player;
+        private _ground: createjs.Bitmap;
+        private _tomahawk: objects.Tomahawk;
 
-        private _scrollableObjContainer : createjs.Container;
+        private _scrollableObjContainer: createjs.Container;
 
-        private _scrollTrigger : number = 350;
+        private _scrollTrigger: number = 350;
 
         constructor() {
             super();
             this.start();
         }
 
-        public start() : void {
-            this._bg = new createjs.Bitmap(assets.getResult("bg"));
-            this._ground = new createjs.Bitmap(assets.getResult("floor"));
+        public start(): void {
             this._scrollableObjContainer = new createjs.Container();
-            this._player = new objects.Player("player");
+
+            this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
+            this._ground = new createjs.Bitmap(assets.getResult("Floor"));
+            this._tomahawk = new objects.Tomahawk("Tomahawk");
+            this._tomahawk.position.y = config.Screen.HEIGHT - 30;
+            this._tomahawk.position.x = 50;
+
+            this._scrollableObjContainer.addChild(this._bg);
+            this._scrollableObjContainer.addChild(this._ground);
+            this._scrollableObjContainer.addChild(this._tomahawk);
 
             this._ground.y = 535;
 
@@ -28,42 +39,34 @@ module scenes {
             window.onkeydown = this._onKeyDown;
             window.onkeyup = this._onKeyUp;
 
-            createjs.Sound.play("theme");
+            //createjs.Sound.play("theme");
 
             stage.addChild(this);
         }
 
-        public update() : void {
+        public update(): void {
 
-            if(controls.LEFT) {
-                this._player.moveLeft();
-            }
-            if(controls.RIGHT) { 
-                this._player.moveRight();
-            } 
-            if(controls.JUMP) {
-                this._player.jump();
-            }
+            /*if(!this._tomahawk.getIsGrounded())
+                this._checkTomahawkWithFloor();
+            this._tomahawk.update();*/
 
-            if(!controls.RIGHT && !controls.LEFT)
-            {
-                this._player.resetAcceleration();
+            if (controls.JUMP) {
+                if (!this._tomahawk.getIsThrown()) {
+                    this._tomahawk.throw();
+                }
             }
 
-            if(!this._player.getIsGrounded())
-                this._checkPlayerWithFloor();
+            this._tomahawk.update();
 
-            this._player.update();
-
-            if(this.checkScroll()) {
-                this._scrollBGForward(this._player.position.x);
+            if (this.checkScroll()) {
+                this._scrollBGForward(this._tomahawk.position.x);
             }
 
 
         }
 
-        private _onKeyDown(event: KeyboardEvent) : void {
-             switch(event.keyCode) {
+        private _onKeyDown(event: KeyboardEvent): void {
+            switch (event.keyCode) {
                 case keys.W:
                     console.log("W key pressed");
                     controls.UP = true;
@@ -86,8 +89,8 @@ module scenes {
             }
         }
 
-        private _onKeyUp(event : KeyboardEvent) : void {
-            switch(event.keyCode) {
+        private _onKeyUp(event: KeyboardEvent): void {
+            switch (event.keyCode) {
                 case keys.W:
                     controls.UP = false;
                     break;
@@ -106,21 +109,21 @@ module scenes {
             }
         }
 
-        private _scrollBGForward(speed : number) : void{
-            if(this._scrollableObjContainer.regX < 3071 - 815)
+        private _scrollBGForward(speed: number): void {
+            if (this._scrollableObjContainer.regX < 3071 - 815)
                 this._scrollableObjContainer.regX = speed - 300;
         }
 
-        private _checkPlayerWithFloor() : void {
-            if(this._player.y+ this._player.getBounds().height > this._ground.y) {
+        private _checkTomahawkWithFloor(): void {
+            if (this._tomahawk.y + this._tomahawk.getBounds().height > this._ground.y) {
                 console.log("HIT GROUND");
-                this._player.position.y = this._ground.y - this._player.getBounds().height;
-                this._player.setIsGrounded(true);
+                this._tomahawk.position.y = this._ground.y - this._tomahawk.getBounds().height;
+                this._tomahawk.setIsGrounded(true);
             }
         }
 
-        private checkScroll() : boolean {
-            if(this._player.x >= this._scrollTrigger) {
+        private checkScroll(): boolean {
+            if (this._tomahawk.x >= this._scrollTrigger) {
                 return true;
             }
             else {
@@ -128,9 +131,9 @@ module scenes {
             }
         }
 
-        private checkCollision(obj1 : objects.GameObject, obj2 : objects.GameObject) : boolean {
+        private checkCollision(obj1: objects.GameObject, obj2: objects.GameObject): boolean {
 
-            if(obj2.x < obj1.x + obj1.getBounds().width &&
+            if (obj2.x < obj1.x + obj1.getBounds().width &&
                 obj2.x + obj2.getBounds().width > obj1.x &&
                 obj2.y < obj1.y + obj1.getBounds().height &&
                 obj2.y + obj2.getBounds().height > obj1.y - 10) {

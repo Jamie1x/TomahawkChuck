@@ -18,7 +18,7 @@ var assetData = [
     { id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png" },
     { id: "SceneBG", src: "../../Assets/images/allScene.png" },
     { id: "Floor", src: "../../Assets/images/floor.png" },
-    { id: "atlas", src: "../../Assets/images/Tomahawk.png" },
+    { id: "atlas", src: "../../Assets/images/atlas.png" },
     { id: "theme", src: "../../Assets/audio/main_theme.mp3" }
 ];
 function preload() {
@@ -41,21 +41,18 @@ function init() {
             assets.getResult("atlas")
         ],
         "frames": [
-            [841, 682, 387, 418, 0, 0, 0],
-            [1, 330, 473, 347, 0, 0, 0],
-            [1, 1, 436, 327, 0, 0, 0],
-            [421, 679, 418, 387, 0, 0, 0],
-            [1426, 333, 347, 473, 0, 0, 0],
-            [877, 1, 327, 436, 0, 0, 0],
-            [1261, 682, 387, 418, 0, 0, 0],
-            [476, 330, 473, 347, 0, 0, 0],
-            [439, 1, 436, 327, 0, 0, 0],
-            [1, 679, 418, 387, 0, 0, 0],
-            [951, 333, 347, 473, 0, 0, 0],
-            [1315, 1, 330, 438, 0, 0, 0]
+            [0, 0, 107, 123, 0, 0, 0],
+            [107, 0, 85, 98, 0, 0, 0],
+            [192, 0, 91, 97, 0, 0, 0],
+            [283, 0, 89, 100, 0, 0, 0],
+            [372, 0, 75, 100, 0, 0, 0]
         ],
         "animations": {
-            "Tomahawk": { "frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "speed": 0.1 },
+            "Chuck": { "frames": [0] },
+            "Colonist": { "frames": [1] },
+            "Cowboy": { "frames": [2] },
+            "Target": { "frames": [3] },
+            "Tomahawk": { "frames": [4] }
         },
     };
     atlas = new createjs.SpriteSheet(atlasData);

@@ -20,11 +20,13 @@ var scenes;
             this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
             this._ground = new createjs.Bitmap(assets.getResult("Floor"));
             this._tomahawk = new objects.Tomahawk("Tomahawk");
-            this._tomahawk.position.y = config.Screen.HEIGHT - 30;
-            this._tomahawk.position.x = 50;
+            this._tomahawk.position.y = config.Screen.HEIGHT - 100;
+            this._tomahawk.position.x = 200;
+            this._target = new objects.Enemy("Colonist", new objects.Vector2(300, config.Screen.HEIGHT - 100), 150, 450);
             this._scrollableObjContainer.addChild(this._bg);
             this._scrollableObjContainer.addChild(this._ground);
             this._scrollableObjContainer.addChild(this._tomahawk);
+            this._scrollableObjContainer.addChild(this._target);
             this._ground.y = 535;
             this.addChild(this._scrollableObjContainer);
             window.onkeydown = this._onKeyDown;
@@ -42,6 +44,7 @@ var scenes;
                 }
             }
             this._tomahawk.update();
+            this._target.update();
             if (this.checkScroll()) {
                 this._scrollBGForward(this._tomahawk.position.x);
             }
@@ -96,7 +99,7 @@ var scenes;
             if (this._tomahawk.y + this._tomahawk.getBounds().height > this._ground.y) {
                 console.log("HIT GROUND");
                 this._tomahawk.position.y = this._ground.y - this._tomahawk.getBounds().height;
-                this._tomahawk.setIsGrounded(true);
+                this._tomahawk.setIsMoving(false);
             }
         };
         Play.prototype.checkScroll = function () {

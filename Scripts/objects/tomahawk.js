@@ -12,69 +12,68 @@ var objects;
         __extends(Tomahawk, _super);
         function Tomahawk(imgString) {
             _super.call(this, imgString);
-            this._gravity = 3;
-            this._isGrounded = false;
+            this._gravity = 9.81;
+            //state transition booleans
             this._isThrown = false;
+            this._isMoving = false;
+            this._isMjolnir = false;
             this._speed = 15;
+            this._timer = 300;
             this.start();
         }
         Tomahawk.prototype.start = function () {
-            this.gotoAndStop(6);
             this._velocity = new objects.Vector2(0, 0);
             this.position = new objects.Vector2(30, 0);
-            this.scaleX = this.scaleX / 2;
-            this.scaleY = this.scaleY / 2;
             this.regX = this.getBounds().width * 0.5;
             this.regY = this.getBounds().height * 0.5;
+            this._startPos = this.position;
         };
         Tomahawk.prototype.update = function () {
-            //may change to config.Screen.CENTER_X
-            this._mouseX = stage.mouseX - this.x;
-            this._mouseY = stage.mouseY - this.y;
+            this._startDiffX = this._startPos.x - this.x;
+            this._startDiffY = this._startPos.y - this.y;
             if (this._isThrown) {
-                this.rotation += 5;
-                this.gotoAndStop(3);
-                if (this._isGrounded) {
-                    this._velocity.y = 0;
-                    this._velocity.x = 0;
-                    this.rotation = 0;
-                    this._isThrown = false;
-                }
-                else {
-                    this._velocity.y += this._gravity;
-                }
-            }
-            if (this.position.y >= config.Screen.HEIGHT) {
-                this._isGrounded = true;
+                this._isMoving = true;
+                this._isThrown = false;
+                //will change depending on mouse
+                this._velocity.x = (this._mouseX / 23) * 2;
+                this._velocity.y = ((this._mouseY / 23) * this._gravity * 0.5);
             }
             // Position
-            this.position.x += this._velocity.x;
-            this.position.y += this._velocity.y;
+            if (this._isMoving) {
+                this.rotation += 5;
+                this.position.x += this._velocity.x;
+                this.position.y += this._velocity.y;
+                this._velocity.y += this._gravity;
+            }
+            else {
+                this._velocity.y = 0;
+                this._velocity.x = 0;
+                this.rotation = 0;
+                this._isThrown = false;
+            }
             //restraints
+            if (this.position.y >= config.Screen.HEIGHT - 100) {
+                this._isMoving = false;
+            }
             if (this._velocity.x > this._speed) {
                 this._velocity.x = this._speed;
             }
-            /*if(this._velocity.y < -this._speed){
-                this._velocity.y = this._speed;
-            }*/
             if (this._velocity.y > this._gravity) {
                 this._velocity.y = this._gravity;
             }
             console.log("Position" + this.position + " Vel: " + this._velocity);
             console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);
+            //console.log("timer: " + this._timer);
             _super.prototype.update.call(this);
         };
         Tomahawk.prototype.throw = function () {
-            this.setIsGrounded(false);
-            //will change depending on mouse
-            this._velocity.x = this._mouseX / 5;
-            this._velocity.y = this._mouseY / 5;
-            this._isThrown = true;
+            if (!this._isMoving) {
+                //may change to config.Screen.CENTER_X
+                this._mouseX = stage.mouseX - this.x;
+                this._mouseY = stage.mouseY - this.y;
+                this._isThrown = true;
+            }
         };
-        /*public resetAcceleration(): void {
-            this._velocity.x = 0;
-            this.gotoAndStop("Tomahawk");
-        }*/
         //getters and setters
         Tomahawk.prototype.getVelocity = function () {
             return this._velocity;
@@ -82,11 +81,11 @@ var objects;
         Tomahawk.prototype.setVelocity = function (newVelocity) {
             this._velocity = newVelocity;
         };
-        Tomahawk.prototype.getIsGrounded = function () {
-            return this._isGrounded;
+        Tomahawk.prototype.getIsMoving = function () {
+            return this._isMoving;
         };
-        Tomahawk.prototype.setIsGrounded = function (b) {
-            this._isGrounded = b;
+        Tomahawk.prototype.setIsMoving = function (b) {
+            this._isMoving = b;
         };
         Tomahawk.prototype.getIsThrown = function () {
             return this._isThrown;

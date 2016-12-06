@@ -62,7 +62,7 @@ module objects {
             }
 
             //restraints
-            if (this.position.y >= config.Screen.HEIGHT - 50) {
+            if (this.position.y >= config.Screen.HEIGHT) {
                 this.rotation = 125;
                 this._isMoving = false;
                 this._timer--;

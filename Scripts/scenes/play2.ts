@@ -10,6 +10,9 @@ module scenes {
         private _chuck: createjs.Bitmap;
         private _tomahawk: objects.Tomahawk;
         private _enemies: objects.Enemy[];
+        private _score: createjs.Text;
+        private _tomahawks: number;
+        private _tomahawkslbl: createjs.Text;
 
         private _scrollableObjContainer: createjs.Container;
         private _scrollTrigger: number = 350;
@@ -26,6 +29,16 @@ module scenes {
             this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
             this._scrollableObjContainer.addChild(this._bg);
 
+            //add score to center of screen
+            this._score = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
+            this._score.y = 10;
+            this._scrollableObjContainer.addChild(this._score);
+
+            this._tomahawks = 3;
+            this._tomahawkslbl = new createjs.Text("" + this._tomahawks, "30px 'Kumar One'", "#000000");
+            this._tomahawkslbl.y = 40;
+            this._scrollableObjContainer.addChild(this._tomahawkslbl);
+
             this._chuck = new createjs.Bitmap(assets.getResult("Chuck"));
             this._chuck.x = 350;
             this._chuck.y = config.Screen.HEIGHT - 175;
@@ -37,7 +50,7 @@ module scenes {
             this._scrollableObjContainer.addChild(this._tomahawk);
 
             this._enemies = [];
-            this._enemies.push(new objects.Enemy("Colonist", new objects.Vector2(900, config.Screen.HEIGHT - 100), 450, 1350, true));
+            this._enemies.push(new objects.Enemy("Colonist", new objects.Vector2(1200, config.Screen.HEIGHT - 100), 750, 1650, true));
             this._enemies.push(new objects.Enemy("Colonist", new objects.Vector2(1800, config.Screen.HEIGHT - 100), 1350, 2250, true))
 
             for (let enemy of this._enemies) {
@@ -53,6 +66,11 @@ module scenes {
         }
 
         public update(): void {
+            //update labels
+            this._score.text = "Score: " + score;
+            this._score.x = this._scrollableObjContainer.regX;
+            this._tomahawkslbl.text = "Tomahawks: " + this._tomahawks;
+            this._tomahawkslbl.x = this._scrollableObjContainer.regX;
 
             this._tomahawk.update();
             for (let enemy of this._enemies) {
@@ -61,31 +79,41 @@ module scenes {
             }
 
             if (controls.JUMP) {
-                if (!this._tomahawk.getIsThrown()) {
+                if (!this._tomahawk.getIsMoving()) {
                     this._tomahawk.throw();
+                    this._tomahawks--;
                 }
             }
 
             if (controls.LEFT) {
                 this._scrollSpeed -= 5;
             }
-            
+
             if (controls.RIGHT) {
                 this._scrollSpeed += 5;
             }
 
-            if(controls.UP) {
+            if (controls.UP) {
                 this._scrollSpeed = 0;
             }
 
-            console.log("scroll Speed: " + this._scrollSpeed);
+            //console.log("scroll Speed: " + this._scrollSpeed);
+
+            //out of tomahawks
+            if (this._tomahawks <= 0) {
+                //scene = config.Scene.GAMEOVER;
+                //changeScene();
+            }
+            //for(let enemy of this._enemies){
+
+            //}
 
             if (this.checkScroll()) {
                 var tomPos = this._tomahawk.position.x;
                 if (this._tomahawk.getIsMoving()) {
                     this._scrollSpeed = 0;
                     this._scrollBGForward(tomPos);
-                }else{
+                } else {
                     this._scrollBGForward(tomPos += this._scrollSpeed);
                 }
             }

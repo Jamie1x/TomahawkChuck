@@ -50,7 +50,7 @@ module scenes {
             this._tomahawk.position.x = 400;
             this._scrollableObjContainer.addChild(this._tomahawk);
 
-            this._target = new objects.Enemy("Target", new objects.Vector2(800, config.Screen.HEIGHT - 100), 300, 300, false);
+            this._target = new objects.Enemy("Target", new objects.Vector2(1200, config.Screen.HEIGHT - 100), 300, 300, false);
             this._scrollableObjContainer.addChild(this._target);
 
             this.addChild(this._scrollableObjContainer);

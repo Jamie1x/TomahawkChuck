@@ -13,6 +13,8 @@
 /// <reference path="../objects/vector2.ts" />
 
 /// <reference path="../util/physicsManager.ts" />
+/// <reference path="../managers/collision.ts" />
 
 /// <reference path="../scenes/menu.ts" />
 /// <reference path="../scenes/play.ts" />
+/// <reference path="../scenes/play2.ts" />

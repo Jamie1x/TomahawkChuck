@@ -1,15 +1,17 @@
 /// <reference path = "_reference.ts" />
 //COMP397 Final Assignment Pt1
 //Jamie Kennedy - 300753196
-//December 3, 2016
+//December 5, 2016
 // Global Variables
 var assets;
 var canvas;
 var stage;
 var spriteSheetLoader;
 var atlas;
+var score;
 var currentScene;
 var scene;
+var collision;
 // Preload Assets required
 var assetData = [
     { id: "BG", src: "../../Assets/images/bg.png" },
@@ -17,9 +19,9 @@ var assetData = [
     { id: "PlayBtn", src: "../../Assets/images/playBtn.png" },
     { id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png" },
     { id: "SceneBG", src: "../../Assets/images/allScene.png" },
-    { id: "Floor", src: "../../Assets/images/floor.png" },
+    { id: "Chuck", src: "../../Assets/images/chuck.png" },
     { id: "atlas", src: "../../Assets/images/atlas.png" },
-    { id: "theme", src: "../../Assets/audio/main_theme.mp3" }
+    { id: "theme", src: "../../Assets/audio/POL-mazy-jungle-short.wav" }
 ];
 function preload() {
     // Create a queue for assets being loaded
@@ -36,6 +38,8 @@ function init() {
     stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
+    collision = new managers.Collision();
+    createjs.Sound.play("theme", 0, 0, 0, 1000);
     var atlasData = {
         "images": [
             assets.getResult("atlas")
@@ -48,7 +52,7 @@ function init() {
             [372, 0, 75, 100, 0, 0, 0]
         ],
         "animations": {
-            "Chuck": { "frames": [0] },
+            "ChuckS": { "frames": [0] },
             "Colonist": { "frames": [1] },
             "Cowboy": { "frames": [2] },
             "Target": { "frames": [3] },
@@ -77,6 +81,11 @@ function changeScene() {
             stage.removeAllChildren();
             currentScene = new scenes.Play();
             console.log("Starting PLAY scene");
+            break;
+        case config.Scene.GAME2:
+            stage.removeAllChildren();
+            currentScene = new scenes.Play2();
+            console.log("Starting PLAY2 scene");
             break;
     }
 }

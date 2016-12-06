@@ -1,6 +1,6 @@
 //COMP397 Final Assignment Pt2
 //Jamie Kennedy - 300753196
-//December 3, 2016
+//December 5, 2016
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -13,40 +13,81 @@ var scenes;
         function Play() {
             _super.call(this);
             this._scrollTrigger = 350;
+            this._scrollSpeed = 0;
             this.start();
         }
         Play.prototype.start = function () {
             this._scrollableObjContainer = new createjs.Container();
             this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
-            this._ground = new createjs.Bitmap(assets.getResult("Floor"));
+            this._scrollableObjContainer.addChild(this._bg);
+            score = 0;
+            //add score to center of screen
+            this._score = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
+            this._score.y = 10;
+            this._scrollableObjContainer.addChild(this._score);
+            this._tomahawks = 3;
+            this._tomahawkslbl = new createjs.Text("" + this._tomahawks, "30px 'Kumar One'", "#000000");
+            this._tomahawkslbl.y = 40;
+            this._scrollableObjContainer.addChild(this._tomahawkslbl);
+            this._chuck = new createjs.Bitmap(assets.getResult("Chuck"));
+            this._chuck.x = 350;
+            this._chuck.y = config.Screen.HEIGHT - 175;
+            this._scrollableObjContainer.addChild(this._chuck);
             this._tomahawk = new objects.Tomahawk("Tomahawk");
             this._tomahawk.position.y = config.Screen.HEIGHT - 100;
-            this._tomahawk.position.x = 200;
-            this._target = new objects.Enemy("Colonist", new objects.Vector2(300, config.Screen.HEIGHT - 100), 150, 450);
-            this._scrollableObjContainer.addChild(this._bg);
-            this._scrollableObjContainer.addChild(this._ground);
+            this._tomahawk.position.x = 400;
             this._scrollableObjContainer.addChild(this._tomahawk);
+            this._target = new objects.Enemy("Target", new objects.Vector2(800, config.Screen.HEIGHT - 100), 300, 300, false);
             this._scrollableObjContainer.addChild(this._target);
-            this._ground.y = 535;
             this.addChild(this._scrollableObjContainer);
             window.onkeydown = this._onKeyDown;
             window.onkeyup = this._onKeyUp;
-            //createjs.Sound.play("theme");
             stage.addChild(this);
         };
         Play.prototype.update = function () {
-            /*if(!this._tomahawk.getIsGrounded())
-                this._checkTomahawkWithFloor();
-            this._tomahawk.update();*/
-            if (controls.JUMP) {
-                if (!this._tomahawk.getIsThrown()) {
-                    this._tomahawk.throw();
-                }
-            }
+            //update labels
+            this._score.text = "Score: " + score;
+            this._score.x = this._scrollableObjContainer.regX;
+            this._tomahawkslbl.text = "Tomahawks: " + this._tomahawks;
+            this._tomahawkslbl.x = this._scrollableObjContainer.regX;
+            //update objects and check collision
             this._tomahawk.update();
             this._target.update();
+            collision.check(this._tomahawk, this._target, this._scrollableObjContainer);
+            //controlls
+            if (controls.JUMP) {
+                if (!this._tomahawk.getIsMoving()) {
+                    this._tomahawk.throw();
+                    this._tomahawks--;
+                }
+            }
+            if (controls.LEFT) {
+                this._scrollSpeed -= 5;
+            }
+            if (controls.RIGHT) {
+                this._scrollSpeed += 5;
+            }
+            if (controls.UP) {
+                this._scrollSpeed = 0;
+            }
+            //console.log("scroll Speed: " + this._scrollSpeed);
+            //console.log("score: " + score);
             if (this.checkScroll()) {
-                this._scrollBGForward(this._tomahawk.position.x);
+                var tomPos = this._tomahawk.position.x;
+                if (this._tomahawk.getIsMoving()) {
+                    this._scrollSpeed = 0;
+                    this._scrollBGForward(tomPos);
+                }
+                else {
+                    this._scrollBGForward(tomPos += this._scrollSpeed);
+                }
+            }
+            //out of tomahawks
+            if (this._tomahawks <= 0) {
+            }
+            if (this._target.y > 500) {
+                scene = config.Scene.GAME2;
+                changeScene();
             }
         };
         Play.prototype._onKeyDown = function (event) {
@@ -94,13 +135,6 @@ var scenes;
         Play.prototype._scrollBGForward = function (speed) {
             if (this._scrollableObjContainer.regX < 3071 - 815)
                 this._scrollableObjContainer.regX = speed - 300;
-        };
-        Play.prototype._checkTomahawkWithFloor = function () {
-            if (this._tomahawk.y + this._tomahawk.getBounds().height > this._ground.y) {
-                console.log("HIT GROUND");
-                this._tomahawk.position.y = this._ground.y - this._tomahawk.getBounds().height;
-                this._tomahawk.setIsMoving(false);
-            }
         };
         Play.prototype.checkScroll = function () {
             if (this._tomahawk.x >= this._scrollTrigger) {

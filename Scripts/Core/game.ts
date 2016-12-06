@@ -2,29 +2,31 @@
 
 //COMP397 Final Assignment Pt1
 //Jamie Kennedy - 300753196
-//December 3, 2016
+//December 5, 2016
 
 // Global Variables
 var assets: createjs.LoadQueue;
 var canvas: HTMLElement;
 var stage: createjs.Stage;
 
-var spriteSheetLoader : createjs.SpriteSheetLoader;
-var atlas : createjs.SpriteSheet;
+var spriteSheetLoader: createjs.SpriteSheetLoader;
+var atlas: createjs.SpriteSheet;
+var score: number;
 
-var currentScene : objects.Scene;
+var currentScene: objects.Scene;
 var scene: number;
+var collision: managers.Collision;
 
 // Preload Assets required
-var assetData:objects.Asset[] = [
-    {id: "BG", src: "../../Assets/images/bg.png"},
-    {id: "Title", src: "../../Assets/images/title.png"},
-    {id: "PlayBtn", src: "../../Assets/images/playBtn.png"},
-    {id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png"},
-    {id: "SceneBG", src: "../../Assets/images/allScene.png"},
-    {id: "Floor", src: "../../Assets/images/floor.png"},
-    {id: "atlas", src: "../../Assets/images/atlas.png"},
-    {id: "theme", src: "../../Assets/audio/main_theme.mp3"}
+var assetData: objects.Asset[] = [
+    { id: "BG", src: "../../Assets/images/bg.png" },
+    { id: "Title", src: "../../Assets/images/title.png" },
+    { id: "PlayBtn", src: "../../Assets/images/playBtn.png" },
+    { id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png" },
+    { id: "SceneBG", src: "../../Assets/images/allScene.png" },
+    { id: "Chuck", src: "../../Assets/images/chuck.png" },
+    { id: "atlas", src: "../../Assets/images/atlas.png" },
+    { id: "theme", src: "../../Assets/audio/POL-mazy-jungle-short.wav" }
 ];
 
 function preload() {
@@ -43,25 +45,27 @@ function init() {
     stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
+    collision = new managers.Collision();
+    createjs.Sound.play("theme", 0, 0, 0, 1000);
 
     let atlasData = {
         "images": [
             assets.getResult("atlas")
         ],
-        "frames":[
-            [0,0,107,123,0,0,0],
-            [107,0,85,98,0,0,0],
-            [192,0,91,97,0,0,0],
-            [283,0,89,100,0,0,0],
-            [372,0,75,100,0,0,0]
+        "frames": [
+            [0, 0, 107, 123, 0, 0, 0],
+            [107, 0, 85, 98, 0, 0, 0],
+            [192, 0, 91, 97, 0, 0, 0],
+            [283, 0, 89, 100, 0, 0, 0],
+            [372, 0, 75, 100, 0, 0, 0]
         ],
-        "animations":{
-            "Chuck" : { "frames" : [0]},
-            "Colonist" : { "frames" : [1]},
-            "Cowboy" : { "frames" : [2]},
-            "Target" : { "frames" : [3]},
-            "Tomahawk" : { "frames" : [4]}
-        }, 
+        "animations": {
+            "ChuckS": { "frames": [0] },
+            "Colonist": { "frames": [1] },
+            "Cowboy": { "frames": [2] },
+            "Target": { "frames": [3] },
+            "Tomahawk": { "frames": [4] }
+        },
     }
 
     atlas = new createjs.SpriteSheet(atlasData);
@@ -76,21 +80,25 @@ function gameLoop(event: createjs.Event): void {
     stage.update();
 }
 
-function changeScene() : void {
-    
+function changeScene(): void {
+
     // Simple state machine pattern to define scene swapping.
-    switch(scene)
-    {
-        case config.Scene.MENU :
+    switch (scene) {
+        case config.Scene.MENU:
             stage.removeAllChildren();
             currentScene = new scenes.Menu();;
             console.log("Starting MENU scene");
             break;
-        case config.Scene.GAME :
+        case config.Scene.GAME:
             stage.removeAllChildren();
             currentScene = new scenes.Play();
             console.log("Starting PLAY scene");
             break;
+        case config.Scene.GAME2:
+            stage.removeAllChildren();
+            currentScene = new scenes.Play2();
+            console.log("Starting PLAY2 scene");
+            break;
     }
-    
+
 }

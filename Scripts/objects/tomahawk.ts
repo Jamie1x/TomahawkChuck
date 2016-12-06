@@ -9,7 +9,6 @@ module objects {
         //state transition booleans
         private _isThrown: boolean = false;
         private _isMoving: boolean = false;
-        private _isMjolnir: boolean = false;
         //diff of this and mouse
         private _mouseX: number;
         private _mouseY: number;
@@ -19,7 +18,7 @@ module objects {
         private _startDiffX: number;
         private _startDiffY: number;
         private _speed: number = 15;
-        private _timer: number = 300;
+        private _timer: number = 100;
         private _startPos: objects.Vector2;
 
         constructor(imgString: string) {
@@ -63,8 +62,15 @@ module objects {
             }
 
             //restraints
-            if (this.position.y >= config.Screen.HEIGHT - 100) {
+            if (this.position.y >= config.Screen.HEIGHT - 50) {
+                this.rotation = 125;
                 this._isMoving = false;
+                this._timer--;
+                if (this._timer <= 0) {
+                    this._timer = 100;
+                    this.position.y = config.Screen.HEIGHT - 100;
+                    this.position.x = 400;
+                }
             }
 
             if (this._velocity.x > this._speed) {
@@ -74,8 +80,8 @@ module objects {
                 this._velocity.y = this._gravity;
             }
 
-            console.log("Position" + this.position + " Vel: " + this._velocity);
-            console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);
+            //console.log("Position" + this.position + " Vel: " + this._velocity);
+            //console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);
             //console.log("timer: " + this._timer);
             super.update();
         }

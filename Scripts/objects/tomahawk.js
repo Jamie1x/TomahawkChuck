@@ -16,9 +16,8 @@ var objects;
             //state transition booleans
             this._isThrown = false;
             this._isMoving = false;
-            this._isMjolnir = false;
             this._speed = 15;
-            this._timer = 300;
+            this._timer = 100;
             this.start();
         }
         Tomahawk.prototype.start = function () {
@@ -52,8 +51,15 @@ var objects;
                 this._isThrown = false;
             }
             //restraints
-            if (this.position.y >= config.Screen.HEIGHT - 100) {
+            if (this.position.y >= config.Screen.HEIGHT - 50) {
+                this.rotation = 125;
                 this._isMoving = false;
+                this._timer--;
+                if (this._timer <= 0) {
+                    this._timer = 100;
+                    this.position.y = config.Screen.HEIGHT - 100;
+                    this.position.x = 400;
+                }
             }
             if (this._velocity.x > this._speed) {
                 this._velocity.x = this._speed;
@@ -61,8 +67,8 @@ var objects;
             if (this._velocity.y > this._gravity) {
                 this._velocity.y = this._gravity;
             }
-            console.log("Position" + this.position + " Vel: " + this._velocity);
-            console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);
+            //console.log("Position" + this.position + " Vel: " + this._velocity);
+            //console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);
             //console.log("timer: " + this._timer);
             _super.prototype.update.call(this);
         };

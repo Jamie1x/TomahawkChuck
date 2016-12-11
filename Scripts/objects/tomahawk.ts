@@ -4,11 +4,12 @@
 
 module objects {
     export class Tomahawk extends objects.GameObject {
-        private _gravity: number = 9.81;
+        //private _gravity: number = 9.81;
         private _velocity: objects.Vector2;
         //state transition booleans
         private _isThrown: boolean = false;
         private _isMoving: boolean = false;
+        private _hitPeak: boolean = false;
         //diff of this and mouse
         private _mouseX: number;
         private _mouseY: number;
@@ -17,7 +18,7 @@ module objects {
         //dif of this and start
         private _startDiffX: number;
         private _startDiffY: number;
-        private _speed: number = 15;
+        private _speed: number = 50;
         private _timer: number = 100;
         private _startPos: objects.Vector2;
 
@@ -44,16 +45,26 @@ module objects {
                 this._isMoving = true;
                 this._isThrown = false;
                 //will change depending on mouse
-                this._velocity.x = (this._mouseX / 23) * 2;
-                this._velocity.y = ((this._mouseY / 23) * this._gravity * 0.5);
+                this._velocity.x = 15;
+                this._velocity.y = -15;
+
             }
 
             // Position
             if (this._isMoving) {
+                if (this.position.x >= stage.mouseX*2 - 400) {
+                    this._hitPeak = true;
+                }
                 this.rotation += 5;
                 this.position.x += this._velocity.x;
-                this.position.y += this._velocity.y;
-                this._velocity.y += this._gravity;
+                if (this._hitPeak) {
+                    this.position.y += -this._velocity.y;
+                }
+                else {
+                    this.position.y += this._velocity.y;
+                }
+
+                //this._velocity.y += this._gravity;
             } else {
                 this._velocity.y = 0;
                 this._velocity.x = 0;
@@ -61,10 +72,11 @@ module objects {
                 this._isThrown = false;
             }
 
-            //restraints
+            //hit ground
             if (this.position.y >= config.Screen.HEIGHT) {
                 this.rotation = 125;
                 this._isMoving = false;
+                this._hitPeak = false;
                 this._timer--;
                 if (this._timer <= 0) {
                     this._timer = 100;
@@ -72,13 +84,13 @@ module objects {
                     this.position.x = 400;
                 }
             }
-
+            //restraints
             if (this._velocity.x > this._speed) {
                 this._velocity.x = this._speed;
             }
-            if (this._velocity.y > this._gravity) {
+            /*if (this._velocity.y > this._gravity) {
                 this._velocity.y = this._gravity;
-            }
+            }*/
 
             //console.log("Position" + this.position + " Vel: " + this._velocity);
             //console.log("X: " + stage.mouseX + " Y: " + stage.mouseY);

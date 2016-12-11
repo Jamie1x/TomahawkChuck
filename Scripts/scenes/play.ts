@@ -13,6 +13,10 @@ module scenes {
         private _score: createjs.Text;
         private _tomahawks: number;
         private _tomahawkslbl: createjs.Text;
+        //private _ark: objects.Ark;
+        private _arc: createjs.Shape;
+        private _mouseX: number;
+        private _mouseY: number;
 
         private _scrollableObjContainer: createjs.Container;
         private _scrollTrigger: number = 350;
@@ -45,6 +49,14 @@ module scenes {
             this._chuck.y = config.Screen.HEIGHT - 175;
             this._scrollableObjContainer.addChild(this._chuck);
 
+            //this._ark = new objects.Ark();
+            //this._ark.x = 400;
+            //this._ark.y = config.Screen.HEIGHT - 100;
+            //this._scrollableObjContainer.addChild(this._ark);
+
+            this._arc = new createjs.Shape();
+            this._scrollableObjContainer.addChild(this._arc);
+
             this._tomahawk = new objects.Tomahawk("Tomahawk");
             this._tomahawk.position.y = config.Screen.HEIGHT - 100;
             this._tomahawk.position.x = 400;
@@ -67,8 +79,18 @@ module scenes {
             this._score.x = this._scrollableObjContainer.regX;
             this._tomahawkslbl.text = "Tomahawks: " + this._tomahawks;
             this._tomahawkslbl.x = this._scrollableObjContainer.regX;
-            
+
+            this._mouseX = stage.mouseX - 400;
+            this._mouseY = stage.mouseY;
+            //this._arc.setTransform(0, 0, 2, 2);
+            //this._arc.setBounds(this._mouseX, this._mouseY, 100,100);
+            this._arc.graphics.clear();
+            if (stage.mouseX >= 400) {
+                this._arc.graphics.beginStroke("#ff0000").arc(this._mouseX*2 + 400, config.Screen.HEIGHT - 100, this._mouseX*2, 0, Math.PI, true);
+            }
+
             //update objects and check collision
+            //this._ark.update();
             this._tomahawk.update();
             this._target.update();
             collision.check(this._tomahawk, this._target, this._scrollableObjContainer);
@@ -86,33 +108,35 @@ module scenes {
             if (controls.RIGHT) {
                 this._scrollSpeed += 5;
             }
-            if(controls.UP) {
+            if (controls.UP) {
                 this._scrollSpeed = 0;
             }
 
             //console.log("scroll Speed: " + this._scrollSpeed);
             //console.log("score: " + score);
+            console.log("X: " + this._arc.x + " Y: " + this._arc.y);
 
             if (this.checkScroll()) {
                 var tomPos = this._tomahawk.position.x;
                 if (this._tomahawk.getIsMoving()) {
                     this._scrollSpeed = 0;
                     this._scrollBGForward(tomPos);
-                }else{
+                } else {
                     this._scrollBGForward(tomPos += this._scrollSpeed);
                 }
             }
 
             //out of tomahawks
-            if(this._tomahawks <= 0){
-                //scene = config.Scene.GAMEOVER;
-                //changeScene();
+            if (this._tomahawks <= 0) {
+                scene = config.Scene.GAMEOVER;
+                changeScene();
             }
-            if(this._target.y > 500){
+            if (this._target.y > 500) {
                 scene = config.Scene.GAME2;
                 changeScene();
             }
         }
+
 
         private _onKeyDown(event: KeyboardEvent): void {
             switch (event.keyCode) {

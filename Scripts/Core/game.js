@@ -20,6 +20,7 @@ var assetData = [
     { id: "InstructionsBtn", src: "../../Assets/images/instructionsBtn.png" },
     { id: "SceneBG", src: "../../Assets/images/allScene.png" },
     { id: "Chuck", src: "../../Assets/images/chuck.png" },
+    { id: "Ark", src: "../../Assets/images/ark.png" },
     { id: "atlas", src: "../../Assets/images/atlas.png" },
     { id: "theme", src: "../../Assets/audio/POL-mazy-jungle-short.wav" }
 ];
@@ -39,7 +40,7 @@ function init() {
     createjs.Ticker.setFPS(config.Game.FPS);
     createjs.Ticker.on("tick", this.gameLoop, this);
     collision = new managers.Collision();
-    createjs.Sound.play("theme", 0, 0, 0, 1000);
+    //createjs.Sound.play("theme", 0, 0, 0, 1000);
     var atlasData = {
         "images": [
             assets.getResult("atlas")
@@ -86,6 +87,26 @@ function changeScene() {
             stage.removeAllChildren();
             currentScene = new scenes.Play2();
             console.log("Starting PLAY2 scene");
+            break;
+        case config.Scene.GAME3:
+            stage.removeAllChildren();
+            currentScene = new scenes.Play3();
+            console.log("Starting PLAY3 scene");
+            break;
+        case config.Scene.WINNER:
+            stage.removeAllChildren();
+            currentScene = new scenes.Winner();
+            console.log("Starting WINNER scene");
+            break;
+        case config.Scene.GAMEOVER:
+            stage.removeAllChildren();
+            currentScene = new scenes.GameOver();
+            console.log("Starting GAMEOVER scene");
+            break;
+        case config.Scene.INSTRUCTIONS:
+            stage.removeAllChildren();
+            currentScene = new scenes.Instructions();
+            console.log("Starting INSTRUCTIONS scene");
             break;
     }
 }

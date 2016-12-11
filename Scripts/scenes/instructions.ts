@@ -8,7 +8,7 @@
 //November 28, 2016
 
 module scenes {
-    export class Menu extends objects.Scene {
+    export class Instructions extends objects.Scene {
 
         // Private instance variables
         // Label or bitmap
@@ -16,7 +16,7 @@ module scenes {
         private _bg: createjs.Bitmap;
         private _title: createjs.Bitmap;
         private _playBtn : objects.Button;
-        private _instructionsBtn: objects.Button;
+        private _menuBtn: objects.Button;
         // Menu Class Contructor
         constructor() {
             super();
@@ -29,7 +29,7 @@ module scenes {
             this.addChild(this._bg);
 
             //add title
-            this._title = new createjs.Bitmap(assets.getResult("Title"));
+            this._title = new createjs.Bitmap(assets.getResult("InstructionsBtn"));
             this._title.x = config.Screen.CENTER_X / 3;
             this._title.y = config.Screen.CENTER_Y / 2;
             this.addChild(this._title);
@@ -39,9 +39,9 @@ module scenes {
             this.addChild(this._playBtn);
             this._playBtn.on("click", this._playBtnClick, this);
 
-            this._instructionsBtn = new objects.Button("InstructionsBtn", config.Screen.CENTER_X + 150, config.Screen.CENTER_Y + 100);
-            this.addChild(this._instructionsBtn);
-            this._instructionsBtn.on("click", this._instructionsBtnClick, this);
+            this._menuBtn = new objects.Button("MenuBtn", config.Screen.CENTER_X + 150, config.Screen.CENTER_Y + 100);
+            this.addChild(this._menuBtn);
+            this._menuBtn.on("click", this._menuBtnClick, this);
 
             stage.addChild(this);
         }
@@ -55,8 +55,8 @@ module scenes {
             changeScene();
         }
 
-        private _instructionsBtnClick(event : createjs.MouseEvent){
-            scene = config.Scene.INSTRUCTIONS;
+        private _menuBtnClick(event : createjs.MouseEvent){
+            scene = config.Scene.MENU;
             changeScene();
         }
     }

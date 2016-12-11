@@ -6,6 +6,10 @@ module config {
         public static MENU : number = 0;
         public static GAME : number = 1;
         public static GAME2 : number = 2;
+        public static GAME3 : number = 3;
+        public static WINNER : number = 4;
+        public static GAMEOVER : number = 5;
+        public static INSTRUCTIONS : number = 6;
     }
 
     export class Screen {

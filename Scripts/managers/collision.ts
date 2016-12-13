@@ -16,7 +16,7 @@ module managers {
 
         }
 
-        public check(coll: objects.GameObject, objColliding: objects.GameObject, container: createjs.Container) {
+        public check(coll: objects.GameObject, objColliding: objects.Enemy, container: createjs.Container) {
             // Check distance between LASER and enemy
 
             if ((coll.x + coll.getBounds().width * 0.5) > (objColliding.x - objColliding.getBounds().width * 0.5) &&
@@ -35,15 +35,30 @@ module managers {
             if ((coll.y + coll.getBounds().height * 0.5) > (objColliding.y - objColliding.getBounds().height * 0.5)) {
                 //console.log("passed top");
             }
-            if((coll.x - coll.getBounds().width * 0.5) < (objColliding.x + objColliding.getBounds().width * 0.5)){
+            if ((coll.x - coll.getBounds().width * 0.5) < (objColliding.x + objColliding.getBounds().width * 0.5)) {
                 //console.log("passed back");
             }
         }
 
-        private destroy(objToDestroy: objects.GameObject, objDestroyedFrom: createjs.Container): void {
-            objDestroyedFrom.removeChild(objToDestroy);
-            objToDestroy.y = 1000;
-            score++;
+        private destroy(objToDestroy: objects.Enemy, objDestroyedFrom: createjs.Container): void {
+            //objToDestroy.y = 1000;
+            if (objToDestroy.getIsDead() == false) {
+                objToDestroy.Destroy();
+            }
+        }
+
+        public checkChuck(coll: objects.Enemy, objColliding: createjs.Bitmap, container: createjs.Container) {
+            // Check distance between LASER and enemy
+
+            if ((coll.x + coll.getBounds().width * 0.5) > (objColliding.x - objColliding.getBounds().width * 0.5) &&
+                (coll.y - coll.getBounds().height * 0.5) < (objColliding.y + objColliding.getBounds().height * 0.5) &&
+                (coll.y + coll.getBounds().height * 0.5) > (objColliding.y - objColliding.getBounds().height * 0.5) &&
+                (coll.x - coll.getBounds().width * 0.5) < (objColliding.x + objColliding.getBounds().width * 0.5)) {
+                if (!coll.getIsDead()) {
+                    scene = config.Scene.GAMEOVER;
+                    changeScene();
+                }
+            }
         }
     }
 }

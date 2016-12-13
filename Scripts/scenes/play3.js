@@ -1,6 +1,6 @@
 //COMP397 Final Assignment Pt2
 //Jamie Kennedy - 300753196
-//December 10, 2016
+//December 5, 2016
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -18,27 +18,51 @@ var scenes;
         }
         Play3.prototype.start = function () {
             this._scrollableObjContainer = new createjs.Container();
-            this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
+            this._bg = new createjs.Bitmap(assets.getResult("SceneBG3"));
             this._scrollableObjContainer.addChild(this._bg);
-            //add score to center of screen
-            this._score = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
-            this._score.y = 10;
-            this._scrollableObjContainer.addChild(this._score);
-            this._tomahawks = 3;
-            this._tomahawkslbl = new createjs.Text("" + this._tomahawks, "30px 'Kumar One'", "#000000");
-            this._tomahawkslbl.y = 40;
-            this._scrollableObjContainer.addChild(this._tomahawkslbl);
+            tomahawks = 7;
+            this._tomahawksLbl = new createjs.Text("" + tomahawks, "30px 'Kumar One'", "#000000");
+            this._tomahawksLbl.y = 10;
+            this._scrollableObjContainer.addChild(this._tomahawksLbl);
+            this._tomahawkPic = new createjs.Sprite(atlas, "Tomahawk");
+            this._tomahawkPic.y = 15;
+            this._tomahawkPic.scaleX = this._tomahawkPic.scaleX / 3;
+            this._tomahawkPic.scaleY = this._tomahawkPic.scaleY / 3;
+            this._scrollableObjContainer.addChild(this._tomahawkPic);
+            enemiesLeft = 7;
+            this._enemiesLbl = new createjs.Text("" + tomahawks, "30px 'Kumar One'", "#000000");
+            this._enemiesLbl.y = 10;
+            this._enemiesLbl.x = 400;
+            this._scrollableObjContainer.addChild(this._enemiesLbl);
+            this._enemiesPic = new createjs.Sprite(atlas, "Cowboy");
+            this._enemiesPic.y = 15;
+            this._enemiesPic.scaleX = this._enemiesPic.scaleX / 3;
+            this._enemiesPic.scaleY = this._enemiesPic.scaleY / 3;
+            this._scrollableObjContainer.addChild(this._enemiesPic);
+            this._scoreLbl = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
+            this._scoreLbl.y = 10;
+            this._scoreLbl.x = 800;
+            this._scrollableObjContainer.addChild(this._scoreLbl);
             this._chuck = new createjs.Bitmap(assets.getResult("Chuck"));
             this._chuck.x = 350;
             this._chuck.y = config.Screen.HEIGHT - 175;
             this._scrollableObjContainer.addChild(this._chuck);
+            this._arc = new createjs.Shape();
+            this._scrollableObjContainer.addChild(this._arc);
             this._tomahawk = new objects.Tomahawk("Tomahawk");
             this._tomahawk.position.y = config.Screen.HEIGHT - 100;
             this._tomahawk.position.x = 400;
             this._scrollableObjContainer.addChild(this._tomahawk);
             this._enemies = [];
-            this._enemies.push(new objects.Enemy("Colonist", new objects.Vector2(1200, config.Screen.HEIGHT - 100), 750, 1650, true));
-            this._enemies.push(new objects.Enemy("Colonist", new objects.Vector2(1800, config.Screen.HEIGHT - 100), 1350, 2250, true));
+            //charging guys
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(2000, config.Screen.HEIGHT - 175), 750, 1650, false, true));
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(2850, config.Screen.HEIGHT - 175), 750, 1650, false, true));
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(3000, config.Screen.HEIGHT - 175), 750, 1650, false, true));
+            //pacing guys
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(2800, config.Screen.HEIGHT - 100), 650, 1800, true, false));
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(1800, config.Screen.HEIGHT - 100), 1350, 2250, true, false));
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(2800, config.Screen.HEIGHT - 100), 100, 3000, true, false));
+            this._enemies.push(new objects.Enemy("Cowboy", new objects.Vector2(700, config.Screen.HEIGHT - 100), 500, 2500, true, false));
             for (var _i = 0, _a = this._enemies; _i < _a.length; _i++) {
                 var enemy = _a[_i];
                 this._scrollableObjContainer.addChild(enemy);
@@ -50,20 +74,33 @@ var scenes;
         };
         Play3.prototype.update = function () {
             //update labels
-            this._score.text = "Score: " + score;
-            this._score.x = this._scrollableObjContainer.regX;
-            this._tomahawkslbl.text = "Tomahawks: " + this._tomahawks;
-            this._tomahawkslbl.x = this._scrollableObjContainer.regX;
+            this._scoreLbl.text = "Score: " + score;
+            this._scoreLbl.x = this._scrollableObjContainer.regX + 600;
+            this._tomahawksLbl.text = ": " + tomahawks;
+            this._tomahawksLbl.x = this._scrollableObjContainer.regX + 50;
+            this._tomahawkPic.x = this._scrollableObjContainer.regX + 10;
+            this._enemiesLbl.text = ": " + enemiesLeft;
+            this._enemiesLbl.x = this._scrollableObjContainer.regX + 350;
+            this._enemiesPic.x = this._scrollableObjContainer.regX + 300;
+            this._mouseX = stage.mouseX - 400;
+            this._arc.graphics.clear();
+            if (stage.mouseX >= 400) {
+                this._arc.graphics.beginStroke("#ff0000").arc(this._mouseX * 2 + 400, config.Screen.HEIGHT - 100, this._mouseX * 2, Math.PI, Math.PI * 1.6, false);
+            }
+            //update objects and check collision
             this._tomahawk.update();
             for (var _i = 0, _a = this._enemies; _i < _a.length; _i++) {
                 var enemy = _a[_i];
                 enemy.update();
-                collision.check(this._tomahawk, enemy, this._scrollableObjContainer);
+                if (this._tomahawk.getIsMoving()) {
+                    collision.check(this._tomahawk, enemy, this._scrollableObjContainer);
+                }
+                collision.checkChuck(enemy, this._chuck, this._scrollableObjContainer);
             }
-            if (controls.JUMP) {
-                if (!this._tomahawk.getIsMoving()) {
+            //controlls
+            if (controls.JUMP && stage.mouseX >= 400) {
+                if (!this._tomahawk.getIsMoving() && !this._tomahawk.getIsGrounded()) {
                     this._tomahawk.throw();
-                    this._tomahawks--;
                 }
             }
             if (controls.LEFT) {
@@ -76,11 +113,8 @@ var scenes;
                 this._scrollSpeed = 0;
             }
             //console.log("scroll Speed: " + this._scrollSpeed);
-            //out of tomahawks
-            if (this._tomahawks <= 0) {
-            }
-            //for(let enemy of this._enemies){
-            //}
+            //console.log("score: " + score);
+            //console.log("X: " + this._arc.x + " Y: " + this._arc.y);
             if (this.checkScroll()) {
                 var tomPos = this._tomahawk.position.x;
                 if (this._tomahawk.getIsMoving()) {
@@ -90,6 +124,15 @@ var scenes;
                 else {
                     this._scrollBGForward(tomPos += this._scrollSpeed);
                 }
+            }
+            //out of tomahawks
+            if (tomahawks <= 0) {
+                scene = config.Scene.GAMEOVER;
+                changeScene();
+            }
+            if (enemiesLeft <= 0) {
+                scene = config.Scene.WINNER;
+                changeScene();
             }
         };
         Play3.prototype._onKeyDown = function (event) {
@@ -145,15 +188,6 @@ var scenes;
             else {
                 return false;
             }
-        };
-        Play3.prototype.checkCollision = function (obj1, obj2) {
-            if (obj2.x < obj1.x + obj1.getBounds().width &&
-                obj2.x + obj2.getBounds().width > obj1.x &&
-                obj2.y < obj1.y + obj1.getBounds().height &&
-                obj2.y + obj2.getBounds().height > obj1.y - 10) {
-                return true;
-            }
-            return false;
         };
         return Play3;
     })(objects.Scene);

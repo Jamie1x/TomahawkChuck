@@ -29,12 +29,12 @@ var objects;
         // Modify the bitmaps alpha value when hovering over the button
         Button.prototype.overButton = function (event) {
             //this.rotation += 15;
-            this.setTransform(this.x, this.y, this.scaleX * 1.1, this.scaleY * 1.1, this.rotation + 15, this.skewX, this.skewY, this.regX, this.regY);
+            this.setTransform(this.x, this.y, this.scaleX * 1.05, this.scaleY * 1.05, this.rotation + 5, this.skewX, this.skewY, this.regX, this.regY);
         };
         // Modify the bitmaps alphave when mouse is not hovering
         Button.prototype.outButton = function (event) {
             //this.rotation -= 15;
-            this.setTransform(this.x, this.y, this.scaleX / 1.1, this.scaleY / 1.1, this.rotation - 15, this.skewX, this.skewY, this.regX, this.regY);
+            this.setTransform(this.x, this.y, this.scaleX / 1.05, this.scaleY / 1.05, this.rotation - 5, this.skewX, this.skewY, this.regX, this.regY);
         };
         return Button;
     })(createjs.Bitmap);

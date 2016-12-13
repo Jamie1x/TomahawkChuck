@@ -30,13 +30,13 @@ module objects {
         // Modify the bitmaps alpha value when hovering over the button
         overButton(event: createjs.MouseEvent) : void {
             //this.rotation += 15;
-            this.setTransform(this.x, this.y, this.scaleX * 1.1, this.scaleY * 1.1, this.rotation + 15, this.skewX, this.skewY, this.regX, this.regY);
+            this.setTransform(this.x, this.y, this.scaleX * 1.05, this.scaleY * 1.05, this.rotation + 5, this.skewX, this.skewY, this.regX, this.regY);
         }
         
         // Modify the bitmaps alphave when mouse is not hovering
         outButton(event:createjs.MouseEvent) : void {
             //this.rotation -= 15;
-            this.setTransform(this.x, this.y, this.scaleX / 1.1, this.scaleY / 1.1, this.rotation - 15, this.skewX, this.skewY, this.regX, this.regY);
+            this.setTransform(this.x, this.y, this.scaleX / 1.05, this.scaleY / 1.05, this.rotation - 5, this.skewX, this.skewY, this.regX, this.regY);
 
         }
     }

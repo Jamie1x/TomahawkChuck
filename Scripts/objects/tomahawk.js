@@ -16,6 +16,7 @@ var objects;
             this._isThrown = false;
             this._isMoving = false;
             this._hitPeak = false;
+            this._isGrounded = false;
             this._speed = 50;
             this._timer = 100;
             this.start();
@@ -25,6 +26,8 @@ var objects;
             this.position = new objects.Vector2(30, 0);
             this.regX = this.getBounds().width * 0.5;
             this.regY = this.getBounds().height * 0.5;
+            this.scaleX = this.scaleX / 1.25;
+            this.scaleY = this.scaleY / 1.25;
             this._startPos = this.position;
         };
         Tomahawk.prototype.update = function () {
@@ -34,8 +37,8 @@ var objects;
                 this._isMoving = true;
                 this._isThrown = false;
                 //will change depending on mouse
-                this._velocity.x = 15;
-                this._velocity.y = -15;
+                this._velocity.x = 8;
+                this._velocity.y = -8;
             }
             // Position
             if (this._isMoving) {
@@ -62,11 +65,14 @@ var objects;
                 this.rotation = 125;
                 this._isMoving = false;
                 this._hitPeak = false;
+                this._isGrounded = true;
                 this._timer--;
                 if (this._timer <= 0) {
+                    this._isGrounded = false;
                     this._timer = 100;
                     this.position.y = config.Screen.HEIGHT - 100;
                     this.position.x = 400;
+                    tomahawks--;
                 }
             }
             //restraints
@@ -83,9 +89,7 @@ var objects;
         };
         Tomahawk.prototype.throw = function () {
             if (!this._isMoving) {
-                //may change to config.Screen.CENTER_X
                 this._mouseX = stage.mouseX - this.x;
-                this._mouseY = stage.mouseY - this.y;
                 this._isThrown = true;
             }
         };
@@ -107,6 +111,12 @@ var objects;
         };
         Tomahawk.prototype.setIsThrown = function (b) {
             this._isThrown = b;
+        };
+        Tomahawk.prototype.getIsGrounded = function () {
+            return this._isGrounded;
+        };
+        Tomahawk.prototype.setIsGrounded = function (b) {
+            this._isGrounded = b;
         };
         return Tomahawk;
     })(objects.GameObject);

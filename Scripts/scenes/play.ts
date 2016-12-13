@@ -10,13 +10,17 @@ module scenes {
         private _chuck: createjs.Bitmap;
         private _tomahawk: objects.Tomahawk;
         private _target: objects.Enemy;
-        private _score: createjs.Text;
-        private _tomahawks: number;
-        private _tomahawkslbl: createjs.Text;
-        //private _ark: objects.Ark;
+        //GUI
+        private _scoreLbl: createjs.Text;
+        private _enemiesLbl: createjs.Text;
+        private _enemiesPic: createjs.Sprite;
+        private _tomahawksLbl: createjs.Text;
+        private _tomahawkPic: createjs.Sprite;
+        private _DAmessage: createjs.Text;
+        private _Wmessage: createjs.Text;
+
         private _arc: createjs.Shape;
         private _mouseX: number;
-        private _mouseY: number;
 
         private _scrollableObjContainer: createjs.Container;
         private _scrollTrigger: number = 350;
@@ -33,26 +37,47 @@ module scenes {
             this._bg = new createjs.Bitmap(assets.getResult("SceneBG"));
             this._scrollableObjContainer.addChild(this._bg);
 
-            score = 0;
-            //add score to center of screen
-            this._score = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
-            this._score.y = 10;
-            this._scrollableObjContainer.addChild(this._score);
+            tomahawks = 3;
+            this._tomahawksLbl = new createjs.Text("" + tomahawks, "30px 'Kumar One'", "#000000");
+            this._tomahawksLbl.y = 10;
+            this._scrollableObjContainer.addChild(this._tomahawksLbl);
+            this._tomahawkPic = new createjs.Sprite(atlas, "Tomahawk");
+            this._tomahawkPic.y = 15;
+            this._tomahawkPic.scaleX = this._tomahawkPic.scaleX / 3;
+            this._tomahawkPic.scaleY = this._tomahawkPic.scaleY / 3;
+            this._scrollableObjContainer.addChild(this._tomahawkPic);
 
-            this._tomahawks = 3;
-            this._tomahawkslbl = new createjs.Text("" + this._tomahawks, "30px 'Kumar One'", "#000000");
-            this._tomahawkslbl.y = 40;
-            this._scrollableObjContainer.addChild(this._tomahawkslbl);
+            enemiesLeft = 1;
+            this._enemiesLbl = new createjs.Text("" + tomahawks, "30px 'Kumar One'", "#000000");
+            this._enemiesLbl.y = 10;
+            this._enemiesLbl.x = 400;
+            this._scrollableObjContainer.addChild(this._enemiesLbl);
+            this._enemiesPic = new createjs.Sprite(atlas, "Target");
+            this._enemiesPic.y = 15;
+            this._enemiesPic.scaleX = this._enemiesPic.scaleX / 3;
+            this._enemiesPic.scaleY = this._enemiesPic.scaleY / 3;
+            this._scrollableObjContainer.addChild(this._enemiesPic);
+
+            score = 0;
+            this._scoreLbl = new createjs.Text("" + score, "30px 'Kumar One'", "#000000");
+            this._scoreLbl.y = 10;
+            this._scoreLbl.x = 800;
+            this._scrollableObjContainer.addChild(this._scoreLbl);
+
+            this._DAmessage = new createjs.Text("A and D to scroll camera", "45px 'Kumar One'", "#000000");
+            this._DAmessage.y = config.Screen.CENTER_Y;
+            this._DAmessage.x = config.Screen.CENTER_X - 200;
+            this._scrollableObjContainer.addChild(this._DAmessage);
+
+            this._Wmessage = new createjs.Text("fire or press W to snap to player", "45px 'Kumar One'", "#000000");
+            this._Wmessage.y = config.Screen.CENTER_Y;
+            this._Wmessage.x = 1400;
+            this._scrollableObjContainer.addChild(this._Wmessage);
 
             this._chuck = new createjs.Bitmap(assets.getResult("Chuck"));
             this._chuck.x = 350;
             this._chuck.y = config.Screen.HEIGHT - 175;
             this._scrollableObjContainer.addChild(this._chuck);
-
-            //this._ark = new objects.Ark();
-            //this._ark.x = 400;
-            //this._ark.y = config.Screen.HEIGHT - 100;
-            //this._scrollableObjContainer.addChild(this._ark);
 
             this._arc = new createjs.Shape();
             this._scrollableObjContainer.addChild(this._arc);
@@ -62,7 +87,7 @@ module scenes {
             this._tomahawk.position.x = 400;
             this._scrollableObjContainer.addChild(this._tomahawk);
 
-            this._target = new objects.Enemy("Target", new objects.Vector2(1200, config.Screen.HEIGHT - 100), 300, 300, false);
+            this._target = new objects.Enemy("Target", new objects.Vector2(1800, config.Screen.HEIGHT - 100), 300, 300, false, false);
             this._scrollableObjContainer.addChild(this._target);
 
             this.addChild(this._scrollableObjContainer);
@@ -75,31 +100,36 @@ module scenes {
 
         public update(): void {
             //update labels
-            this._score.text = "Score: " + score;
-            this._score.x = this._scrollableObjContainer.regX;
-            this._tomahawkslbl.text = "Tomahawks: " + this._tomahawks;
-            this._tomahawkslbl.x = this._scrollableObjContainer.regX;
+            this._scoreLbl.text = "Score: " + score;
+            this._scoreLbl.x = this._scrollableObjContainer.regX + 600;
+            this._tomahawksLbl.text = ": " + tomahawks;
+            this._tomahawksLbl.x = this._scrollableObjContainer.regX + 50;
+            this._tomahawkPic.x = this._scrollableObjContainer.regX + 10;
+            this._enemiesLbl.text = ": " + enemiesLeft;
+            this._enemiesLbl.x = this._scrollableObjContainer.regX + 350;
+            this._enemiesPic.x = this._scrollableObjContainer.regX + 300;
 
             this._mouseX = stage.mouseX - 400;
-            this._mouseY = stage.mouseY;
-            //this._arc.setTransform(0, 0, 2, 2);
-            //this._arc.setBounds(this._mouseX, this._mouseY, 100,100);
             this._arc.graphics.clear();
             if (stage.mouseX >= 400) {
-                this._arc.graphics.beginStroke("#ff0000").arc(this._mouseX*2 + 400, config.Screen.HEIGHT - 100, this._mouseX*2, 0, Math.PI, true);
+                this._arc.graphics.beginStroke("#ff0000").arc(this._mouseX * 2 + 400, config.Screen.HEIGHT - 100, this._mouseX * 2, Math.PI, Math.PI*2, false);
             }
 
+            //console.log(this._target.getIsDead());
+
             //update objects and check collision
-            //this._ark.update();
             this._tomahawk.update();
             this._target.update();
-            collision.check(this._tomahawk, this._target, this._scrollableObjContainer);
+            if (this._tomahawk.getIsMoving()) {
+                collision.check(this._tomahawk, this._target, this._scrollableObjContainer);
+            }
 
             //controlls
-            if (controls.JUMP) {
-                if (!this._tomahawk.getIsMoving()) {
+            if (controls.JUMP && stage.mouseX >= 400) {
+                if (!this._tomahawk.getIsMoving() && !this._tomahawk.getIsGrounded()) {
                     this._tomahawk.throw();
-                    this._tomahawks--;
+                                    createjs.Sound.play("Woosh");
+
                 }
             }
             if (controls.LEFT) {
@@ -114,7 +144,7 @@ module scenes {
 
             //console.log("scroll Speed: " + this._scrollSpeed);
             //console.log("score: " + score);
-            console.log("X: " + this._arc.x + " Y: " + this._arc.y);
+            //console.log("X: " + this._arc.x + " Y: " + this._arc.y);
 
             if (this.checkScroll()) {
                 var tomPos = this._tomahawk.position.x;
@@ -127,11 +157,11 @@ module scenes {
             }
 
             //out of tomahawks
-            if (this._tomahawks <= 0) {
+            if (tomahawks <= 0) {
                 scene = config.Scene.GAMEOVER;
                 changeScene();
             }
-            if (this._target.y > 500) {
+            if (enemiesLeft <= 0) {
                 scene = config.Scene.GAME2;
                 changeScene();
             }
@@ -194,18 +224,6 @@ module scenes {
             else {
                 return false;
             }
-        }
-
-        private checkCollision(obj1: objects.GameObject, obj2: objects.GameObject): boolean {
-
-            if (obj2.x < obj1.x + obj1.getBounds().width &&
-                obj2.x + obj2.getBounds().width > obj1.x &&
-                obj2.y < obj1.y + obj1.getBounds().height &&
-                obj2.y + obj2.getBounds().height > obj1.y - 10) {
-                return true;
-            }
-
-            return false;
         }
     }
 }

@@ -10,18 +10,23 @@ var objects;
 (function (objects) {
     var Enemy = (function (_super) {
         __extends(Enemy, _super);
-        function Enemy(imageString, defaultPosition, node1, node2, isPacing) {
+        function Enemy(imageString, defaultPosition, node1, node2, isPacing, isCharging) {
             _super.call(this, imageString);
             this._isClosing = false;
+            this._isDead = false;
+            //this._animation = imageString;
             this.x = defaultPosition.x;
             this.y = defaultPosition.y;
             this._node1 = node1;
             this._node2 = node2;
             this._isPacing = isPacing;
+            this._isCharging = isCharging;
             this.regX = this.getBounds().width * 0.5;
             this.regY = this.getBounds().height * 0.5;
         }
         Enemy.prototype.start = function () {
+            this._deathAnimation = "Explode";
+            this.gotoAndStop(this.currentAnimation);
         };
         Enemy.prototype.update = function () {
             //shoots enemy up until it hits the center. then retracts
@@ -40,6 +45,29 @@ var objects;
                     this._isClosing = true;
                 }
             }
+            if (this._isCharging) {
+                this.setTransform(this.x -= 6, this.y, this.scaleX = -1, this.scaleY);
+            }
+            if (this._isDead && this.currentAnimationFrame == atlas.getNumFrames(this._deathAnimation) - 1) {
+                this.Dead();
+            }
+        };
+        Enemy.prototype.Destroy = function () {
+            createjs.Sound.play("Boom");
+            this.gotoAndPlay(this._deathAnimation);
+            this.setIsDead(true);
+        };
+        Enemy.prototype.Dead = function () {
+            this.setIsDead(false);
+            this.y = 1000;
+            enemiesLeft--;
+            score++;
+        };
+        Enemy.prototype.setIsDead = function (death) {
+            this._isDead = death;
+        };
+        Enemy.prototype.getIsDead = function () {
+            return this._isDead;
         };
         Enemy.prototype.setPosition = function (pos) {
             this.x = pos.x;

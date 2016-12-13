@@ -29,9 +29,22 @@ var managers;
             }
         };
         Collision.prototype.destroy = function (objToDestroy, objDestroyedFrom) {
-            objDestroyedFrom.removeChild(objToDestroy);
-            objToDestroy.y = 1000;
-            score++;
+            //objToDestroy.y = 1000;
+            if (objToDestroy.getIsDead() == false) {
+                objToDestroy.Destroy();
+            }
+        };
+        Collision.prototype.checkChuck = function (coll, objColliding, container) {
+            // Check distance between LASER and enemy
+            if ((coll.x + coll.getBounds().width * 0.5) > (objColliding.x - objColliding.getBounds().width * 0.5) &&
+                (coll.y - coll.getBounds().height * 0.5) < (objColliding.y + objColliding.getBounds().height * 0.5) &&
+                (coll.y + coll.getBounds().height * 0.5) > (objColliding.y - objColliding.getBounds().height * 0.5) &&
+                (coll.x - coll.getBounds().width * 0.5) < (objColliding.x + objColliding.getBounds().width * 0.5)) {
+                if (!coll.getIsDead()) {
+                    scene = config.Scene.GAMEOVER;
+                    changeScene();
+                }
+            }
         };
         return Collision;
     })();
